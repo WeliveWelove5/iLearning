@@ -7,13 +7,23 @@ import { Learn } from "./pages/Learn";
 import { Community } from "./pages/Community";
 import { Leaderboard } from "./pages/Leaderboard";
 import { Profile } from "./pages/Profile";
+import { Login } from "./pages/Login";
 import { useAuthStore } from "./stores/authStore";
 
-// Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
   
   if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+  
+  if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
   
@@ -24,6 +34,14 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/"
           element={
