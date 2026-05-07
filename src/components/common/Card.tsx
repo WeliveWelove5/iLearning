@@ -33,7 +33,7 @@ export const Card: React.FC<CardProps> = ({
         ${glow ? "shadow-lg shadow-primary-500/20 border-primary-500/30" : ""}
         ${className}
       `}
-      {...props}
+      onClick={props.onClick}
     >
       {children}
     </motion.div>
