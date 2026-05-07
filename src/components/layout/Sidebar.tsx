@@ -13,6 +13,8 @@ import {
   Flame,
   ChevronLeft,
   ChevronRight,
+  Shield,
+  BarChart3,
 } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useSidebarStore } from "../../stores/sidebarStore";
@@ -24,6 +26,11 @@ const navItems = [
   { path: "/community", label: "社区", icon: Users },
   { path: "/leaderboard", label: "排行榜", icon: Trophy },
   { path: "/profile", label: "个人中心", icon: User },
+];
+
+const adminNavItems = [
+  { path: "/admin", label: "管理仪表盘", icon: BarChart3 },
+  { path: "/admin/users", label: "用户管理", icon: Shield },
 ];
 
 export const Sidebar: React.FC = () => {
@@ -128,6 +135,60 @@ export const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+
+      {user?.role === 'admin' && (
+        <div className="p-4 border-t border-dark-border">
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-xs text-gray-500 uppercase tracking-wider mb-2"
+              >
+                管理员
+              </motion.p>
+            )}
+          </AnimatePresence>
+          <div className="space-y-1">
+            {adminNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    isActive
+                      ? "bg-primary-500/20 text-primary-400 border border-primary-500/30"
+                      : "text-gray-400 hover:bg-dark-bg hover:text-white"
+                  } ${isCollapsed ? "justify-center" : ""}`}
+                  title={isCollapsed ? item.label : undefined}
+                >
+                  <Icon
+                    className={`w-5 h-5 flex-shrink-0 ${
+                      isActive ? "text-primary-400" : "group-hover:text-white"
+                    }`}
+                  />
+                  <AnimatePresence>
+                    {!isCollapsed && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="font-medium whitespace-nowrap"
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="p-4 border-t border-dark-border space-y-1">
         <button

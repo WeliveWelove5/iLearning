@@ -72,6 +72,8 @@ graph TB
 | /profile | 个人中心 | 需登录 |
 | /community | 社区 | 需登录 |
 | /leaderboard | 排行榜 | 需登录 |
+| /admin | 管理仪表盘 | 需管理员权限 |
+| /admin/users | 用户管理 | 需管理员权限 |
 
 ---
 
@@ -164,8 +166,12 @@ interface User {
   avatar?: string;
   targetLanguage: Language;
   proficiencyLevel: ProficiencyLevel;
+  role: 'user' | 'vip' | 'admin';
   createdAt: Date;
   lastLogin: Date;
+  streak: number;
+  totalStudyTime: number;
+  isActive: boolean;
 }
 
 type Language = 'english' | 'japanese' | 'korean';
@@ -244,6 +250,7 @@ src/
 │   ├── learnStore.ts     # 学习进度状态
 │   ├── progressStore.ts  # 学习统计状态
 │   ├── sidebarStore.ts   # 侧边栏折叠状态
+│   ├── adminStore.ts     # 管理后台状态
 │   └── socialStore.ts    # 社区数据状态
 ```
 
@@ -293,6 +300,18 @@ src/
 │       ├── PostCard.tsx
 │       ├── CommentList.tsx
 │       └── Leaderboard.tsx
+├── pages/
+│   ├── Home.tsx
+│   ├── Courses.tsx
+│   ├── Learn.tsx
+│   ├── Community.tsx
+│   ├── Leaderboard.tsx
+│   ├── Profile.tsx
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   └── admin/
+│       ├── AdminDashboard.tsx
+│       └── UserManagement.tsx
 ```
 
 ### 6.2 组件设计原则

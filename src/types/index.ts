@@ -3,6 +3,7 @@ export type Language = 'english' | 'japanese' | 'korean';
 export type ProficiencyLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 export type LessonType = 'vocabulary' | 'grammar' | 'listening' | 'speaking';
 export type ProgressStatus = 'not_started' | 'in_progress' | 'completed';
+export type UserRole = 'user' | 'vip' | 'admin';
 
 // User types
 export interface User {
@@ -12,10 +13,12 @@ export interface User {
   avatar?: string;
   targetLanguage: Language;
   proficiencyLevel: ProficiencyLevel;
+  role: UserRole;
   createdAt: Date;
   lastLogin: Date;
   streak: number;
   totalStudyTime: number;
+  isActive: boolean;
 }
 
 export interface RegisterData {
@@ -190,4 +193,28 @@ export interface FlashCard {
   back: string;
   pronunciation?: string;
   mastered: boolean;
+}
+
+// Admin types
+export interface AdminStats {
+  totalUsers: number;
+  activeUsers: number;
+  totalStudyTime: number;
+  averageSessionTime: number;
+  newUsersToday: number;
+  newUsersThisWeek: number;
+  newUsersThisMonth: number;
+  dailyActiveUsers: number[];
+  weeklyActiveUsers: number[];
+  monthlyActiveUsers: number[];
+}
+
+export interface UserStats {
+  userId: string;
+  user: User;
+  totalStudyTime: number;
+  sessionsCount: number;
+  lastActiveAt: Date;
+  coursesCompleted: number;
+  wordsLearned: number;
 }

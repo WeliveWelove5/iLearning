@@ -8,6 +8,9 @@ import { Community } from "./pages/Community";
 import { Leaderboard } from "./pages/Leaderboard";
 import { Profile } from "./pages/Profile";
 import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { UserManagement } from "./pages/admin/UserManagement";
 import { useAuthStore } from "./stores/authStore";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -30,6 +33,20 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <>{children}</>;
 };
 
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <Router>
@@ -39,6 +56,14 @@ function App() {
           element={
             <PublicRoute>
               <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
             </PublicRoute>
           }
         />
@@ -110,6 +135,26 @@ function App() {
                 <Profile />
               </MainLayout>
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <MainLayout>
+                <AdminDashboard />
+              </MainLayout>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <AdminRoute>
+              <MainLayout>
+                <UserManagement />
+              </MainLayout>
+            </AdminRoute>
           }
         />
       </Routes>

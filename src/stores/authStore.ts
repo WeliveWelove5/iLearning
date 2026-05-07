@@ -32,7 +32,6 @@ export const useAuthStore = create<AuthState>()(
 
       register: async (data: RegisterData) => {
         set({ isLoading: true });
-        // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const newUser: User = {
           id: `user-${Date.now()}`,
@@ -40,10 +39,12 @@ export const useAuthStore = create<AuthState>()(
           username: data.username,
           targetLanguage: data.targetLanguage,
           proficiencyLevel: "A1",
+          role: "user",
           createdAt: new Date(),
           lastLogin: new Date(),
           streak: 1,
           totalStudyTime: 0,
+          isActive: true,
         };
         set({ user: newUser, isAuthenticated: true, isLoading: false });
       },

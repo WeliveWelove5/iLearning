@@ -17,10 +17,12 @@ export const currentUser: User = {
   avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
   targetLanguage: "english",
   proficiencyLevel: "A2",
+  role: "user",
   createdAt: new Date("2024-01-15"),
   lastLogin: new Date(),
   streak: 12,
-  totalStudyTime: 3600 * 24, // 24 hours in seconds
+  totalStudyTime: 3600 * 24,
+  isActive: true,
 };
 
 // Courses data
