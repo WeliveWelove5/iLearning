@@ -243,6 +243,7 @@ src/
 │   ├── courseStore.ts    # 课程数据状态
 │   ├── learnStore.ts     # 学习进度状态
 │   ├── progressStore.ts  # 学习统计状态
+│   ├── sidebarStore.ts   # 侧边栏折叠状态
 │   └── socialStore.ts    # 社区数据状态
 ```
 
@@ -276,7 +277,7 @@ src/
 │   │   ├── Input.tsx
 │   │   └── Modal.tsx
 │   ├── layout/           # 布局组件
-│   │   ├── Sidebar.tsx
+│   │   ├── Sidebar.tsx   # 可折叠侧边栏组件
 │   │   ├── Header.tsx
 │   │   └── MainLayout.tsx
 │   ├── learn/            # 学习模块组件
@@ -300,6 +301,18 @@ src/
 - **可复用性**: 通用组件支持配置化
 - **类型安全**: 所有组件使用TypeScript类型
 - **性能优化**: 使用React.memo和useMemo优化
+
+### 6.3 侧边栏折叠功能
+
+| 功能点 | 描述 |
+|--------|------|
+| 状态管理 | 使用 Zustand store (sidebarStore) 管理折叠状态 |
+| 持久化 | 通过 zustand/middleware persist 保存到 LocalStorage |
+| 展开宽度 | 256px (w-64) |
+| 收起宽度 | 80px (w-20) |
+| 动画 | Framer Motion AnimatePresence 实现文字淡入淡出 |
+| 图标显示 | 收起状态隐藏标签，仅保留图标 + tooltip |
+| 切换按钮 | 侧边栏右侧垂直居中位置，带有 chevron 图标 |
 
 ---
 
@@ -350,6 +363,7 @@ src/
 | 进度更新 | Framer Motion | 数字滚动 + 环形填充 |
 | 成就解锁 | Canvas Confetti | 彩纸爆炸效果 |
 | 路由切换 | Framer Motion | 淡入淡出过渡 |
+| 侧边栏折叠 | CSS Transition + Framer AnimatePresence | 宽度变化 + 文字淡入淡出 |
 
 ---
 

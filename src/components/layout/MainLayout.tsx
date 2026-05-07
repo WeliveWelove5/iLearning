@@ -1,41 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import { useSidebarStore } from "../../stores/sidebarStore";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isCollapsed } = useSidebarStore();
 
   return (
     <div className="min-h-screen bg-dark-bg">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
-      {/* Mobile Sidebar Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:hidden ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        className={`transition-all duration-300 ease-in-out ${
+          isCollapsed ? "lg:ml-20" : "lg:ml-64"
         }`}
       >
-        <Sidebar />
-      </div>
-
-      {/* Main Content */}
-      <div className="lg:ml-64">
-        <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
+        <Header />
         <main className="p-6">
           {children}
         </main>
