@@ -8,7 +8,7 @@ import {
   Trash2,
   Shield,
   Crown,
-  User,
+  User as UserIcon,
 } from "lucide-react";
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
@@ -35,7 +35,7 @@ const roleColors = {
 };
 
 const roleIcons = {
-  user: User,
+  user: UserIcon,
   vip: Crown,
   admin: Shield,
 };
