@@ -3,6 +3,21 @@ import { persist } from "zustand/middleware";
 import type { User, RegisterData } from "../types";
 import { currentUser } from "../data/mockData";
 
+const adminUser: User = {
+  id: "admin-1",
+  email: "admin@linguaflow.com",
+  username: "admin",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
+  targetLanguage: "english",
+  proficiencyLevel: "C2",
+  role: "admin",
+  createdAt: new Date("2023-12-01"),
+  lastLogin: new Date(),
+  streak: 100,
+  totalStudyTime: 180000,
+  isActive: true,
+};
+
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -18,16 +33,17 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: currentUser,
       isAuthenticated: true,
       isLoading: false,
 
       login: async (email: string, password: string) => {
         set({ isLoading: true });
-        // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        set({ user: currentUser, isAuthenticated: true, isLoading: false });
+        
+        const isAdmin = email === "admin@linguaflow.com" || email === "admin";
+        set({ user: isAdmin ? adminUser : currentUser, isAuthenticated: true, isLoading: false });
       },
 
       register: async (data: RegisterData) => {
@@ -54,36 +70,36 @@ export const useAuthStore = create<AuthState>()(
       },
 
       updateProfile: (data: Partial<User>) => {
-        const { user } = get();
-        if (user) {
-          set({ user: { ...user, ...data } });
+        const currentUser = useAuthStore.getState().user;
+        if (currentUser) {
+          set({ user: { ...currentUser, ...data } });
         }
       },
 
       updateStreak: () => {
-        const { user } = get();
-        if (user) {
-          const lastLogin = new Date(user.lastLogin);
+        const currentUser = useAuthStore.getState().user;
+        if (currentUser) {
+          const lastLogin = new Date(currentUser.lastLogin);
           const today = new Date();
           const diffDays = Math.floor(
             (today.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)
           );
           
           if (diffDays === 1) {
-            set({ user: { ...user, streak: user.streak + 1, lastLogin: new Date() } });
+            set({ user: { ...currentUser, streak: currentUser.streak + 1, lastLogin: new Date() } });
           } else if (diffDays > 1) {
-            set({ user: { ...user, streak: 1, lastLogin: new Date() } });
+            set({ user: { ...currentUser, streak: 1, lastLogin: new Date() } });
           }
         }
       },
 
       addStudyTime: (seconds: number) => {
-        const { user } = get();
-        if (user) {
+        const currentUser = useAuthStore.getState().user;
+        if (currentUser) {
           set({
             user: {
-              ...user,
-              totalStudyTime: user.totalStudyTime + seconds,
+              ...currentUser,
+              totalStudyTime: currentUser.totalStudyTime + seconds,
             },
           });
         }
