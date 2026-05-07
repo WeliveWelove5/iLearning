@@ -9,8 +9,8 @@ import {
   Calendar,
   BarChart3,
 } from "lucide-react";
-import { Card } from "../components/common/Card";
-import { useAdminStore } from "../stores/adminStore";
+import { Card } from "../../components/common/Card";
+import { useAdminStore } from "../../stores/adminStore";
 
 const containerVariants = {
   hidden: { opacity: 0 },
